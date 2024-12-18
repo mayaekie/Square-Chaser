@@ -13,8 +13,8 @@ namespace Square_Chaser
     public partial class Form1 : Form
     {
         // global variables
-        Rectangle player1 = new Rectangle(475,160,30,30);
-        Rectangle player2 = new Rectangle(80,160,30,30);
+        Rectangle player1 = new Rectangle(475, 160, 30, 30);
+        Rectangle player2 = new Rectangle(80, 160, 30, 30);
         Rectangle point = new Rectangle(280, 160, 15, 15);
         Rectangle speed = new Rectangle(220, 125, 15, 15);
 
@@ -46,7 +46,7 @@ namespace Square_Chaser
         public Form1()
         {
             InitializeComponent();
-            
+
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -168,27 +168,50 @@ namespace Square_Chaser
             // if player hits point square
             if (player1.IntersectsWith(point))
             {
+                player1Score += 1;
                 point.X = randGen.Next(5, 200);
                 point.Y = randGen.Next(this.Height - 180);
-                
+
             }
             else if (player2.IntersectsWith(point))
             {
-                point.X = randGen.Next(120, 145);
-                point.Y = randGen.Next(this.Height + 25);
+                player2Score += 1;
+                point.X = randGen.Next(5, 200);
+                point.Y = randGen.Next(this.Height - 25);
             }
 
-            //move speed boost
+            // if player hits speed boost
             if (player1.IntersectsWith(speed))
             {
-                point.X = randGen.Next(5, 200);
-                point.Y = randGen.Next(this.Height - 180);
+                speed.X = randGen.Next(5, 200);
+                speed.Y = randGen.Next(this.Height - 180);
 
             }
             else if (player2.IntersectsWith(speed))
             {
-                point.X = randGen.Next(120, 145);
-                point.Y = randGen.Next(this.Height + 25);
+                speed.X = randGen.Next(5, 200);
+                speed.Y = randGen.Next(this.Height - 25);
+            }
+
+
+            // speedboost interact and move
+            if (player1.IntersectsWith(speed))
+            {
+                playerSpeed1 += 2;
+            }
+            else if (player2.IntersectsWith(speed))
+            {
+                playerSpeed2 += 2;
+            }
+
+            //wait 3 seconds, -3
+            if (playerSpeed1 == 7)
+            {
+                speedTimer2.Enabled = true;
+            }
+            else if (playerSpeed2 == 7)
+            {
+                speedTimer1.Enabled = true;
             }
 
             // check score and end game
@@ -207,28 +230,10 @@ namespace Square_Chaser
 
             Refresh();
 
-            // speedboost interact and move
-            if (player1.IntersectsWith(speed))
-            {
-                playerSpeed1 += 2;
-            }
-            else if (player2.IntersectsWith(speed))
-            {
-                playerSpeed2 += 2;
-            }
 
-            //wait 3 seconds, -3
-            if (playerSpeed1 == 7)
-            {
-                speedTimer2.Enabled = true;
-            }
-            else if (playerSpeed2 ==7 )
-            {
-                speedTimer1.Enabled = true;
-            }
-            
 
         }
+
 
         private void speedTimer1_Tick(object sender, EventArgs e)
         {
@@ -246,6 +251,7 @@ namespace Square_Chaser
 
         private void speedTimer2_Tick(object sender, EventArgs e)
         {
+            speedTimer2.Enabled = false;
             if (speedTimer1.Enabled == false)
             {
                 playerSpeed2 -= 3;
