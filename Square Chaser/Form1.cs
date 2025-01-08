@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
+using System.Threading;
 
 namespace Square_Chaser
 {
@@ -39,6 +41,9 @@ namespace Square_Chaser
         SolidBrush whiteBrush = new SolidBrush(Color.White);
         SolidBrush redBrush = new SolidBrush(Color.Crimson);
         SolidBrush yellowBrush = new SolidBrush(Color.Gold);
+
+        SoundPlayer speedboostPlayer = new SoundPlayer(Properties.Resources.Swoosh_3_SoundBible_com_1573211927);
+        SoundPlayer pointPlayer = new SoundPlayer(Properties.Resources.Air_Plane_Ding_SoundBible_com_496729130);
 
         Random randGen = new Random();
         int random;
@@ -168,6 +173,7 @@ namespace Square_Chaser
             // if player hits point square
             if (player1.IntersectsWith(point))
             {
+                pointPlayer.Play();
                 player1Score += 1;
                 point.X = randGen.Next(5, 200);
                 point.Y = randGen.Next(this.Height - 180);
@@ -175,6 +181,7 @@ namespace Square_Chaser
             }
             else if (player2.IntersectsWith(point))
             {
+                pointPlayer.Play();
                 player2Score += 1;
                 point.X = randGen.Next(5, 200);
                 point.Y = randGen.Next(this.Height - 25);
@@ -183,12 +190,14 @@ namespace Square_Chaser
             // if player hits speed boost
             if (player1.IntersectsWith(speed))
             {
+                speedboostPlayer.Play();
                 speed.X = randGen.Next(5, 200);
                 speed.Y = randGen.Next(this.Height - 180);
 
             }
             else if (player2.IntersectsWith(speed))
             {
+                speedboostPlayer.Play();
                 speed.X = randGen.Next(5, 200);
                 speed.Y = randGen.Next(this.Height - 25);
             }
